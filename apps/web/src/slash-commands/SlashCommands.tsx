@@ -65,6 +65,10 @@ import { emoticon } from "./emoticon";
 import { statusCommand } from "./status";
 import { SDKContextClass } from "../contexts/SDKContextClass.ts";
 
+import escapeHtml from "escape-html";
+
+import Markdown from "../Markdown";
+
 export { CommandCategories, Command };
 
 export const Commands = [
@@ -73,7 +77,9 @@ export const Commands = [
         args: "<message>",
         description: _td("slash_command|spoiler"),
         runFn: function (cli, roomId, threadId, message = "") {
-            return successSync(ContentHelpers.makeHtmlMessage(message, `<span data-mx-spoiler>${message}</span>`));
+            const md = new Markdown(message);
+            const html = md.isPlainText() ? escapeHtml(message) : md.toHTML();
+            return successSync(ContentHelpers.makeHtmlMessage(message, `<span data-mx-spoiler>${html}</span>`));
         },
         category: CommandCategories.messages,
     }),

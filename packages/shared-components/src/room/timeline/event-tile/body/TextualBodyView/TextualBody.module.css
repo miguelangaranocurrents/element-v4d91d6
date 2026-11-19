@@ -41,6 +41,11 @@
     display: flex;
 }
 
+/* Let the body shrink to the available width so wide content (e.g. code blocks) doesn't blow out the flex row. */
+.annotated > :first-child {
+    min-width: 0;
+}
+
 .annotatedInline {
     display: inline-flex;
 }
